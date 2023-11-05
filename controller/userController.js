@@ -81,6 +81,42 @@ exports.loginController= async(req,res)=>{
     }
     
 }
+
+exports.getAllUserController=async(req,res)=>{
+    try {
+        const users = await userModels.find({});
+        res.status(200).send({
+            success:true,
+            massage:'User getting successfully',
+            users
+        })
+    } catch (error) {
+        return res.status(500).send({
+            massage:'Error in getting user',
+            success:false,
+            error
+        })
+    }
+}
+exports.getSingleUserController=async(req,res)=>{
+    try {
+        const {id} = req.params;
+        const users = await userModels.findById(id);
+        res.status(200).send({
+            success:true,
+            massage:'User getting successfully',
+            users
+        })
+    } catch (error) {
+        return res.status(500).send({
+            massage:'Error in getting user',
+            success:false,
+            error
+        })
+    }
+}
+
+
 exports.testController = async (req,res)=>{
     try {
         res.status(200).send({
