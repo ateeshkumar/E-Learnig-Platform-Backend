@@ -53,7 +53,7 @@ exports.getProjectController= async(req,res)=>{
 exports.getSingleProject=async(req,res)=>{
     try {
         const {slug} = req.params
-        const projects = await projectModel.findOne({slug});
+        const projects = await projectModel.findOne({slug}).populate('mentor');
         res.status(200).send({
             success:true,
             massage:'Project Find Successfully',
