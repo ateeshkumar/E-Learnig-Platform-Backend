@@ -5,7 +5,7 @@ exports.cteareProjectController=async(req,res)=>{
     try {
         const {logo,title,description,lable,github,language,skills,guide,mentor} = req.body;
 
-        if(!logo || !title || !description || !lable || !github || !language || !skills || !guide || !mentor){
+        if(!logo || !title || !description || !lable || !github || !language || !skills || !guide || !status || !mentor){
             res.status(500).send({
                 success:false,
                 massage:'All fields are required'
@@ -18,7 +18,7 @@ exports.cteareProjectController=async(req,res)=>{
                 massage:'Unable to find user'
             });
         }
-        const newProject = await projectModel({logo,title,slug:slugify(title),description,lable,github,language,skills,guide,mentor});
+        const newProject = await projectModel({logo,title,slug:slugify(title),description,lable,github,language,skills,guide,status,mentor});
         await newProject.save();
         res.status(200).send({
             success:true,
@@ -80,6 +80,25 @@ exports.deleteSingleProjectController = async(req,res)=>{
         res.status(500).send({
             success:false,
             massage:'Error in Deleting Project Project',
+            error
+        })
+    }
+}
+exports.updateProjectController= async(req,res)=>{
+    try {
+        const {id} = req.params;
+        const {logo,title,description,lable,github,language,skills,guide,mentor}= req.body
+        const projects = await projectModel.findByIdAndUpdate(id,{logo,title,slug:slugify(title),description,lable,github,language,skills,guide,status,mentor});
+        await projects.save();
+        res.status(200).send({
+            success:true,
+            massage:'Project Updated Successfully',
+            projects
+        })
+    } catch (error) {
+        res.status(500).send({
+            success:false,
+            massage:'Something went wrong!!',
             error
         })
     }

@@ -36,6 +36,11 @@ const projectSchema = new mongoose.Schema({
         type:String,
         required:[true,'Skills is Required']
     },
+    status:{
+        type:String,
+        default:'Live',
+        enum:['Live','Active','End']
+    },
     mentor:{
         type:mongoose.ObjectId,
         ref:'User',
