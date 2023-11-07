@@ -124,8 +124,8 @@ exports.requestUserCountController= async(req,res)=>{
 }
 exports.userGroupController= async(req,res)=>{
     try {
-        const {id} = req.params;
-        const project = await projectModel.findById(id).populate("users");
+        const {slug} = req.params;
+        const project = await projectModel.findOne({slug}).populate("users");
         res.status(200).send({
             success:true,
             massage:'Get user project successfully',
