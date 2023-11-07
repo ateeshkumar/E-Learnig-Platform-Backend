@@ -45,7 +45,13 @@ const projectSchema = new mongoose.Schema({
         type:mongoose.ObjectId,
         ref:'User',
         required:[true,'mentor is required']
-    }
+    },
+    users:[
+        {
+            type:mongoose.ObjectId,
+            ref:"User"
+        },
+    ]
 },{timestamps:true});
 const projectModel = mongoose.model('Project',projectSchema);
 module.exports = projectModel;

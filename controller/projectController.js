@@ -1,6 +1,7 @@
 const slugify = require('slugify');
 const userModel = require('../models/userModels');
 const projectModel = require('../models/projectModel');
+const { default: mongoose } = require('mongoose');
 exports.cteareProjectController=async(req,res)=>{
     try {
         const {logo,title,description,lable,github,language,skills,guide,mentor} = req.body;
@@ -95,6 +96,42 @@ exports.updateProjectController= async(req,res)=>{
             massage:'Project Updated Successfully',
             projects
         })
+    } catch (error) {
+        res.status(500).send({
+            success:false,
+            massage:'Something went wrong!!',
+            error
+        })
+    }
+}
+exports.requestUserCountController= async(req,res)=>{
+    try {
+        const {id} = req.params;
+        const projects = await projectModel.findById(id);
+        const count = projects.users.length;
+        res.status(200).send({
+            success:true,
+            massage:'Project user count successfully',
+            count
+        })
+    } catch (error) {
+        res.status(500).send({
+            success:false,
+            massage:'Something Went wrong!!',
+            error
+        })
+    }
+}
+exports.userGroupController= async(req,res)=>{
+    try {
+        const {id} = req.params;
+        const project = await projectModel.findById(id).populate("users");
+        res.status(200).send({
+            success:true,
+            massage:'Get user project successfully',
+            project
+        })
+        
     } catch (error) {
         res.status(500).send({
             success:false,

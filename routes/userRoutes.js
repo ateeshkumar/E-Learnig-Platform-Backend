@@ -19,5 +19,4 @@ route.get('/admin-auth',requestSignIn,adminAccess,(req,res)=>{
 })
 
 
-
 module.exports = route

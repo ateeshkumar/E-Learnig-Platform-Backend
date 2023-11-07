@@ -27,7 +27,13 @@ const userSchema = new mongoose.Schema({
     role:{
         type:Number,
         default:0,
-    }
+    },
+    projects:[
+        {
+            type:mongoose.ObjectId,
+            ref:"Project"
+        },
+    ],
 },{timeStamp:true});
 const userModel = mongoose.model('User',userSchema);
 module.exports = userModel;

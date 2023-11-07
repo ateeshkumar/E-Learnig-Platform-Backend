@@ -101,7 +101,7 @@ exports.getAllUserController=async(req,res)=>{
 exports.getSingleUserController=async(req,res)=>{
     try {
         const {id} = req.params;
-        const users = await userModels.findById(id);
+        const users = await userModels.findById(id).populate('projects');
         res.status(200).send({
             success:true,
             massage:'User getting successfully',
