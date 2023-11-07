@@ -11,6 +11,6 @@ route.get('/get-project/:slug',getSingleProject);
 route.delete('/delete-project/:id',requestSignIn,adminAccess,deleteSingleProjectController);
 route.put('/update-project/:id',requestSignIn,adminAccess,updateProjectController);
 route.get('/request-user-count/:id',requestUserCountController);
-route.post('/request-join/:id',requestSignIn,userGroupJoinRequestController)
+route.post('/request-join/:id',userGroupJoinRequestController)
 route.get('/project-group/:id',requestSignIn,userGroupController);
 module.exports = route;
