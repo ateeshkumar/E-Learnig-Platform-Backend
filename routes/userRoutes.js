@@ -9,7 +9,7 @@ route.post('/register',registerController);
 route.post('/login',loginController);
 route.get('/test',requestSignIn,adminAccess,testController);
 route.get('/all-user',requestSignIn,adminAccess,getAllUserController);
-route.get('/all-user/:id',requestSignIn,adminAccess,getSingleUserController)
+route.get('/all-user/:id',requestSignIn,getSingleUserController)
 
 route.get('/user-auth',requestSignIn,(req,res)=>{
     res.status(200).send({ok:true});
