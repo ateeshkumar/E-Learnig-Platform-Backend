@@ -3,11 +3,9 @@ const mongoose = require('mongoose');
 const htmlDesSchema = new mongoose.Schema({
     heading:{
         type:String,
-        required:[true,'Title is required'],
     },
     paragraph:{
         type:String,
-        required:[true,'Description is requred']
     },
     code:{
         type:String
