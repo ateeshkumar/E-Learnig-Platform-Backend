@@ -11,35 +11,35 @@ const {
   setJeeMainDes,
   setJeeMain,
   setSubscribe,
+  setJavaScript,
+  setJavaScriptContent,
+  getJavaScriptTitle,
+  getJavaScriptSingleTitle,
+  getJavaScriptContent,
 } = require("../controller/contentController");
 
 const route = express.Router();
 
 const path = require('path');
 const multer = require('multer');
-
-const storage  = multer.diskStorage({
-    destination:function(req,file,cb){
-        cb(null,path.resolve(`./public/uplode`));
-
-    },
-    filename:function(req,file,cb){
-        const filename = `${Date.now()}-${file.originalname}`;
-        cb(null,filename);
-    },
-});
-const upload = multer({ storage: storage });
+const { requestSignIn, adminAccess } = require("../middleware/authMiddleware");
 
 route.get("/get-html", getContent);
 route.get("/get-html/:id", getSingleContent);
-route.post("/create-content", setContent);
-route.post("/create-description", setDescription);
+route.post("/create-content",requestSignIn,adminAccess, setContent);
+route.post("/create-description",requestSignIn,adminAccess, setDescription);
 route.get('/get-detail-html/:id',getHtmlDescriptionDetalis);
-route.post('/jeemain',setJeeMain);
-route.post('/jeemaindes',setJeeMainDes);
+route.post('/jeemain',requestSignIn,adminAccess,setJeeMain);
+route.post('/jeemaindes',requestSignIn,adminAccess,setJeeMainDes);
 route.get('/get-jeemain',getJeeMain);
 route.get('/get-jeemain/:id',getJeeMainSingle);
 route.get('/get-detail-jeemain/:id',getJeeMainDes);
 route.post('/subscribe',setSubscribe);
 
+//javaScript
+route.post('/create-javascript-title',requestSignIn,adminAccess,setJavaScript);
+route.post('/create-javascript-content',requestSignIn,adminAccess,setJavaScriptContent);
+route.get('/get-jevascript-title',getJavaScriptTitle);
+route.get('/get-jevascript-title/:slug',getJavaScriptSingleTitle);
+route.get('/get-javascript-content/:slug',getJavaScriptContent);
 module.exports = route;

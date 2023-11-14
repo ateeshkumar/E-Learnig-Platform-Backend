@@ -5,7 +5,9 @@ const htmlModel = require('../models/htmlContentModels');
 const JeeMainModel = require('../models/jeeMainQue');
 const jeeMainDes = require('../models/jeeMainQueDes');
 const subscribeModel = require('../models/subscribeModel');
-
+const javaScriptTitle = require('../models/javaScriptTitle');
+const JavaScriptContent = require('../models/JavaScriptContent');
+const slugify = require('slugify')
 
 
 exports.setContent=async(req,res)=>{
@@ -308,6 +310,169 @@ exports.setSubscribe = async(req,res)=>{
         return res.status(500).send({
             success:false,
             massage:"Error in massage",
+            error
+        })
+    }
+}
+
+// Java Script
+exports.setJavaScript = async(req,res)=>{
+    try {
+        const {title} =req.body;
+        if(!title){
+            return res.status(403).send({
+                success:false,
+                massage:'All field are required!!'
+            })
+        }
+        const javascript = new javaScriptTitle({title,slug:slugify(title)});
+        await javascript.save();
+        return res.status(200).send({
+            success:true,
+            massage:"Title Posted Successfully",
+            javascript
+        })
+    } catch (error) {
+            res.status(500).send({
+            success:false,
+            massage:'Error in JavaScript posting',
+            error
+        })
+    }
+}
+
+exports.setJavaScriptContent = async(req,res)=>{
+    try {
+        const {heading,paragraph,code,content} = req.body;
+        if(!content){
+            res.status(403).send({
+                success:false,
+                massage:"Content Not found",
+            })
+        }
+        const existingContent = await javaScriptTitle.findById(content);
+        if(!existingContent){
+            res.status(401).send({
+                success:false,
+                massage:"Content Does not exist",
+            })
+        }
+
+        const javascript = new JavaScriptContent({heading,paragraph,code,content});
+        const session = await mongoose.startSession();
+        session.startTransaction();
+        await javascript.save(session);
+        existingContent.description.push(javascript);
+        await existingContent.save(session);
+        await session.commitTransaction();
+        await javascript.save();
+        res.status(200).send({
+            success:true,
+            massage:'Content Posted Successfully',
+            javascript
+        })
+
+    } catch (error) {
+        res.status(500).send({
+            success:false,
+            massage:'Error in JavaScript posting',
+            error
+        })
+    }
+}
+exports.getJavaScriptTitle = async(req,res) =>{
+    try {
+        const javascript = await javaScriptTitle.find({});
+        res.status(200).send({
+            success:true,
+            massage:'data get successfully',
+            javascript,
+        })
+    } catch (error) {
+        res.status(500).send({
+            success:false,
+            massage:'Error in JavaScript posting',
+            error
+        })
+    }
+}
+exports.setJavaScriptContent = async(req,res)=>{
+    try {
+        const {heading,paragraph,code,content} = req.body;
+        if(!content){
+            res.status(403).send({
+                success:false,
+                massage:"Content Not found",
+            })
+        }
+        const existingContent = await javaScriptTitle.findById(content);
+        if(!existingContent){
+            res.status(401).send({
+                success:false,
+                massage:"Content Does not exist",
+            })
+        }
+
+        const javascript = new JavaScriptContent({heading,paragraph,code,content});
+        const session = await mongoose.startSession();
+        session.startTransaction();
+        await javascript.save(session);
+        existingContent.description.push(javascript);
+        await existingContent.save(session);
+        await session.commitTransaction();
+        await javascript.save();
+        res.status(200).send({
+            success:true,
+            massage:'Content Posted Successfully',
+            javascript
+        })
+
+    } catch (error) {
+        res.status(500).send({
+            success:false,
+            massage:'Error in JavaScript posting',
+            error
+        })
+    }
+}
+exports.getJavaScriptSingleTitle = async(req,res) =>{
+    try {
+        const {slug} = req.params;
+        const javascript = await javaScriptTitle.findOne({slug});
+        res.status(200).send({
+            success:true,
+            massage:'data get successfully',
+            javascript,
+        })
+    } catch (error) {
+        res.status(500).send({
+            success:false,
+            massage:'Error in JavaScript posting',
+            error
+        })
+    }
+}
+
+exports.getJavaScriptContent = async(req,res)=>{
+    try {
+        const {slug} = req.params;
+        const javascript = await javaScriptTitle.findOne({slug}).populate("description");
+        // if(!javascript){
+        //     return res.status(401).send({
+        //         success:false,
+        //         massage:'content',
+        //     })
+        // }
+        return res.status(200).send({
+            success:true,
+            massage:'Data Get Successfully',
+            javascript
+        });
+    } catch (error) {
+        console.log(error)
+        return res.status(500).send({
+            success:false,
+            massage:'Error in JavaScript getting',
             error
         })
     }
