@@ -72,6 +72,7 @@ exports.deleteSingleProjectController = async(req,res)=>{
     try {
         const {id} = req.params
         const projects = await projectModel.findByIdAndDelete(id);
+
         res.status(200).send({
             success:true,
             massage:'Project Deleted Successfully',

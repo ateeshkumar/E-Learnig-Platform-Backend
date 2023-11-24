@@ -34,6 +34,12 @@ const userSchema = new mongoose.Schema({
             ref:"Project"
         },
     ],
+    todo:[
+        {
+            type:mongoose.ObjectId,
+            ref:"Todo"
+        }
+    ]
 },{timeStamp:true});
 const userModel = mongoose.model('User',userSchema);
 module.exports = userModel;

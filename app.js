@@ -9,6 +9,7 @@ const connctDb = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
 const contentRoutes = require('./routes/contentRoutes');
 const projectRoute = require('./routes/projectRoute');
+const todoRoute = require('./routes/todoRoutes');
 
 
 connctDb();
@@ -20,7 +21,8 @@ app.use(morgan('dev'));
 
 app.use('/api/v1/user',userRoutes);
 app.use('/api/v1/content',contentRoutes);
-app.use('/api/v1/auth',projectRoute)
+app.use('/api/v1/auth',projectRoute);
+app.use('/api/v1/to-do',todoRoute);
 app.get('/',(req,res)=>{
     res.send('<h1>Hello Learning app</h1>')
 })
